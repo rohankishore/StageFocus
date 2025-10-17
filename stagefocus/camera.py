@@ -7,6 +7,7 @@ import numpy as np
 import pyvirtualcam
 import threading
 
+
 def run_center_stage(config_manager, stop_event: threading.Event):
     """
     Initializes and runs the main computer vision loop.
@@ -60,7 +61,8 @@ def run_center_stage(config_manager, stop_event: threading.Event):
                             min_y, max_y = min(min_y, py), max(max_y, py)
 
                     box_w, box_h = max_x - min_x, max_y - min_y
-                    pad_w, pad_h = int(box_w * config_manager.get("PADDING_FACTOR")), int(box_h * config_manager.get("PADDING_FACTOR"))
+                    pad_w, pad_h = int(box_w * config_manager.get("PADDING_FACTOR")), int(
+                        box_h * config_manager.get("PADDING_FACTOR"))
                     target_box = np.array([min_x - pad_w, min_y - pad_h, box_w + 2 * pad_w, box_h + 2 * pad_h])
                 else:
                     target_box = np.array([0, 0, source_width, source_height])
