@@ -3,7 +3,7 @@ Manages loading and saving of application settings from a JSON file.
 """
 import json
 
-CONFIG_FILE = "stagefocus/config.json"
+CONFIG_FILE = "config/config.json"
 
 class ConfigManager:
     """

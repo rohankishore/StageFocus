@@ -4,15 +4,16 @@ Manages the system tray icon and application lifecycle for StageFocus.
 import threading
 from PIL import Image
 from pystray import Icon as TrayIcon, MenuItem as item
+from . import settings_ui
 
-
-def create_tray_icon(stop_event: threading.Event):
+def create_tray_icon(config_manager, stop_event: threading.Event):
     """
     Creates and runs the system tray icon.
 
     The icon provides an 'Exit' option to gracefully shut down the application.
 
     Args:
+        config_manager: An instance of the ConfigManager class.
         stop_event: A threading.Event to signal when the application should exit.
     """
 
@@ -23,8 +24,15 @@ def create_tray_icon(stop_event: threading.Event):
             stop_event.set()
         icon.stop()
 
-    image = Image.open("icon.jpg")
-    menu = (item('Exit', lambda icon, menu_item: exit_action(icon)),)
+    def open_settings(icon):
+        """Opens the settings window."""
+        settings_ui.open_settings_window(config_manager)
+
+    image = Image.open("stagefocus/icon.jpg")
+    menu = (
+        item('Settings', lambda icon, menu_item: open_settings(icon)),
+        item('Exit', lambda icon, menu_item: exit_action(icon))
+    )
     icon = TrayIcon("StageFocus", image, "StageFocus - Center Stage", menu)
 
     print("Starting system tray icon...")

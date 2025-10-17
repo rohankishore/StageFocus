@@ -7,10 +7,7 @@ import numpy as np
 import pyvirtualcam
 import threading
 
-from . import config
-
-
-def run_center_stage(stop_event: threading.Event):
+def run_center_stage(config_manager, stop_event: threading.Event):
     """
     Initializes and runs the main computer vision loop.
 
@@ -19,12 +16,13 @@ def run_center_stage(stop_event: threading.Event):
     and sends the resulting cropped and resized frame to a virtual camera.
 
     Args:
+        config_manager: An instance of the ConfigManager class.
         stop_event: A threading.Event object to signal when the loop should stop.
     """
     mp_pose = mp.solutions.pose
     pose = mp.solutions.pose.Pose()
 
-    cap = cv2.VideoCapture(config.WEBCAM_ID)
+    cap = cv2.VideoCapture(config_manager.get("WEBCAM_ID"))
     if not cap.isOpened():
         print("Error: Cannot open video source. Is another app using the camera?")
         return
@@ -62,15 +60,16 @@ def run_center_stage(stop_event: threading.Event):
                             min_y, max_y = min(min_y, py), max(max_y, py)
 
                     box_w, box_h = max_x - min_x, max_y - min_y
-                    pad_w, pad_h = int(box_w * config.PADDING_FACTOR), int(box_h * config.PADDING_FACTOR)
+                    pad_w, pad_h = int(box_w * config_manager.get("PADDING_FACTOR")), int(box_h * config_manager.get("PADDING_FACTOR"))
                     target_box = np.array([min_x - pad_w, min_y - pad_h, box_w + 2 * pad_w, box_h + 2 * pad_h])
                 else:
                     target_box = np.array([0, 0, source_width, source_height])
 
-                smoothed_box = smoothed_box * (1 - config.SMOOTHING_FACTOR) + target_box * config.SMOOTHING_FACTOR
+                smoothing_factor = config_manager.get("SMOOTHING_FACTOR")
+                smoothed_box = smoothed_box * (1 - smoothing_factor) + target_box * smoothing_factor
                 x, y, w, h = smoothed_box.astype(int)
                 x, y = max(0, x), max(0, y)
-                w, h = min(source_width - x, w), min(source_height - y, h)
+w, h = min(source_width - x, w), min(source_height - y, h)
 
                 if w > 0 and h > 0:
                     cropped_frame = frame[y:y + h, x:x + w]
