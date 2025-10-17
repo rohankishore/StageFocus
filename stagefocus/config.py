@@ -1,0 +1,8 @@
+"""
+Configuration parameters for the StageFocus application.
+"""
+
+# --- Configuration Parameters ---
+WEBCAM_ID = 0
+SMOOTHING_FACTOR = 0.07
+PADDING_FACTOR = 0.2
