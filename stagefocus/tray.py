@@ -23,7 +23,7 @@ def create_tray_icon(stop_event: threading.Event):
             stop_event.set()
         icon.stop()
 
-    image = Image.open("stagefocus/icon.jpg")
+    image = Image.open("icon.jpg")
     menu = (item('Exit', lambda icon, menu_item: exit_action(icon)),)
     icon = TrayIcon("StageFocus", image, "StageFocus - Center Stage", menu)
 
