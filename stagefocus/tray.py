@@ -28,7 +28,7 @@ def create_tray_icon(config_manager, stop_event: threading.Event):
         """Opens the settings window."""
         settings_ui.open_settings_window(config_manager)
 
-    image = Image.open("stagefocus/icon.jpg")
+    image = Image.open("icon.jpg")
     menu = (
         item('Settings', lambda icon, menu_item: open_settings(icon)),
         item('Exit', lambda icon, menu_item: exit_action(icon))

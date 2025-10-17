@@ -69,7 +69,7 @@ def run_center_stage(config_manager, stop_event: threading.Event):
                 smoothed_box = smoothed_box * (1 - smoothing_factor) + target_box * smoothing_factor
                 x, y, w, h = smoothed_box.astype(int)
                 x, y = max(0, x), max(0, y)
-w, h = min(source_width - x, w), min(source_height - y, h)
+                w, h = min(source_width - x, w), min(source_height - y, h)
 
                 if w > 0 and h > 0:
                     cropped_frame = frame[y:y + h, x:x + w]
