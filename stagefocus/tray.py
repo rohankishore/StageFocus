@@ -20,6 +20,7 @@ def create_tray_icon(config_manager, stop_event: threading.Event):
 
     def exit_action(icon):
         """Stops the camera thread and exits the application."""
+        
         print("Exit requested from tray.")
         if not stop_event.is_set():
             stop_event.set()
