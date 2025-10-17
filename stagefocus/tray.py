@@ -6,6 +6,7 @@ from PIL import Image
 from pystray import Icon as TrayIcon, MenuItem as item
 from . import settings_ui
 
+
 def create_tray_icon(config_manager, stop_event: threading.Event):
     """
     Creates and runs the system tray icon.
